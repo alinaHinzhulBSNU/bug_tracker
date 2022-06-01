@@ -12,3 +12,5 @@ INSTALLED_APPS += (
     "tasks.apps.TasksConfig",
     "projects.apps.ProjectsConfig",
 )
+
+TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']

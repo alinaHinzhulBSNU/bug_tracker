@@ -18,8 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', include("django.contrib.auth.urls")),  # add default auth
+    path('', include("projects.urls")),  # projects app routing
     path('admin/', admin.site.urls),  # admin dashboard
-    path('projects/', include("projects.urls")),  # projects app routing
     path('bugs/', include("bugs.urls")),  # bugs app routing
     path('users/', include("users.urls")),  # users app routing
     path('tasks/', include("tasks.urls")),  # tasks app routing

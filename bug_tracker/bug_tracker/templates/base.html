@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {% block title %} Bug tracker {% endblock %}
+    </title>
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a>
+                Bug tracker
+            </a>
+        </h1>
+        <a href="/logout">
+            <button>
+                Logout
+            </button>
+        </a>
+    </header>
+
+    <div id="menu">
+        <p>
+            <a href="#">Dashboard</a>
+        </p>
+        <p>
+            <a href="#">Backlog</a>
+        </p>
+        <p>
+            <a href="#">Team</a>
+        </p>
+        <p>
+            <a href="#">Statistics</a>
+        </p>
+    </div>
+
+    <div id="content">
+        {% block content %} {% endblock %}
+    </div>
+
+    <footer>
+        <p>© Bug tracker</p>
+        <p>2022</p>
+    </footer>
+</body>
+</html>

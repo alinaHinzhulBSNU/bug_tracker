@@ -4,4 +4,4 @@ from django.http import HttpResponse
 
 # REGISTER NEW USER
 def register(request):
-    return HttpResponse("Register")
+    return render(request, "users/register.html", {})

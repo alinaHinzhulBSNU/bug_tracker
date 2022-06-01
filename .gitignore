@@ -141,3 +141,4 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/!/musicapp/music-recommender.joblib
+!/fx_bug_tracker/node_modules/

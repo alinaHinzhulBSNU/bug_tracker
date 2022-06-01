@@ -1,7 +1,13 @@
+{% load static %}
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--SASS and Bootstrap-->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="{% static 'js/index.js' %}"></script>
+
     <title>
         {% block title %} Bug tracker {% endblock %}
     </title>

@@ -14,3 +14,7 @@ INSTALLED_APPS += (
 )
 
 TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates']
+
+STATICFILES_DIRS = [
+    "./bug_tracker/static",
+]

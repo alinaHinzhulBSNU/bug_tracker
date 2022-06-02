@@ -4,51 +4,46 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--SASS and Bootstrap-->
+    <!--Google Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+    <!--Font Awesome Icons-->
+    <script src="https://kit.fontawesome.com/66af6c845b.js" crossorigin="anonymous"></script>
+
+    <!--SASS-->
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
     <script src="{% static 'js/index.js' %}"></script>
+
+    <!--Charts.js-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
 
     <title>
         {% block title %} Bug tracker {% endblock %}
     </title>
 </head>
 
-<body>
-    <header>
-        <h1>
-            <a>
+<body class="d-flex flex-column min-vh-100">
+    <header class="navbar navbar-dark bg-dark p-3">
+        <h1 class="navbar-brand mb-0 h1 text-center">
+            <a class="text-primary" href="/">
                 Bug tracker
             </a>
         </h1>
         <a href="/logout">
-            <button>
+            <button class="btn btn-warning">
                 Logout
             </button>
         </a>
     </header>
 
-    <div id="menu">
-        <p>
-            <a href="#">Dashboard</a>
-        </p>
-        <p>
-            <a href="#">Backlog</a>
-        </p>
-        <p>
-            <a href="#">Team</a>
-        </p>
-        <p>
-            <a href="#">Statistics</a>
-        </p>
-    </div>
-
-    <div id="content">
+    <div id="page" class="row">
         {% block content %} {% endblock %}
     </div>
 
-    <footer>
-        <p>© Bug tracker</p>
-        <p>2022</p>
+    <footer class="row text-center mt-auto bg-dark">
+        <p class="text-light p-3">©&nbsp2022&nbspBug&nbsptracker</p>
     </footer>
 </body>
 </html>

@@ -1,9 +1,54 @@
 {% extends "users/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Register
 {% endblock %}
 
 {% block content %}
-<h2>Register</h2>
+<div class="row align-items-center justify-content-center bg-dark p-3">
+    <div class="col-md-6 rounded bg-light ps-5 pe-5">
+        <h2 class="text-center text-secondary p-3">Register</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>{{ form.first_name|as_crispy_field }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p>{{ form.last_name|as_crispy_field }}</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <p>{{ form.username|as_crispy_field }}</p>
+                <p>{{ form.email|as_crispy_field }}</p>
+                <p>{{ form.role|as_crispy_field }}</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p>{{ form.password1|as_crispy_field }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p>{{ form.password2|as_crispy_field }}</p>
+                </div>
+            </div>
+
+            <p class="text-center">
+                Do you have an account? Sign in <a href="/users/login" class="text-info">here</a>
+            </p>
+
+            <!--BUTTON-->
+            <div class="row text-center">
+                <div>
+                    <button type="submit" class="btn btn-success">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+</div>
 {% endblock %}

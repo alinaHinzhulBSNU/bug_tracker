@@ -17,7 +17,6 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include("django.contrib.auth.urls")),  # add default auth
     path('', include("projects.urls")),  # projects app routing
     path('admin/', admin.site.urls),  # admin dashboard
     path('users/', include("users.urls")),  # users app routing

@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!--Font Awesome Icons-->
+    <script src="https://kit.fontawesome.com/66af6c845b.js" crossorigin="anonymous"></script>
+
     <!--Google Font-->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
-
-    <!--Font Awesome Icons-->
-    <script src="https://kit.fontawesome.com/66af6c845b.js" crossorigin="anonymous"></script>
 
     <!--SASS-->
     <link rel="stylesheet" href="{% static 'css/index.css' %}">
@@ -27,15 +27,23 @@
 <body class="d-flex flex-column min-vh-100">
     <header class="navbar navbar-dark bg-dark p-3">
         <h1 class="navbar-brand mb-0 h1 text-center">
-            <a class="text-primary" href="/">
+            <a class="text-light" href="/">
                 Bug tracker
             </a>
         </h1>
-        <a href="/logout">
-            <button class="btn btn-warning">
-                Logout
-            </button>
-        </a>
+        <div id="menu" class="row">
+            <div class="menu-item col-sm-6 text-center">
+                <a href="#">
+                    <i class="fas fa-user text-light"></i>
+                    <span class="text-light">{{ user.username }}</span>
+                </a>
+            </div>
+            <div class="menu-item col-sm-6 text-center">
+                <a href="/users/logout">
+                    <i class="fas fa-sign-out-alt text-light text-lg"></i>
+                </a>
+            </div>
+        </div>
     </header>
 
     <div id="page" class="row">

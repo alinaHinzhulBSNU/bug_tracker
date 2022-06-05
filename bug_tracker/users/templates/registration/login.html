@@ -1,9 +1,31 @@
 {% extends "users/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Login
 {% endblock %}
 
 {% block content %}
-<h2>Login</h2>
+<div class="h-100 row align-items-center justify-content-center">
+    <div class="col-md-6 rounded bg-light ps-5 pe-5">
+        <h2 class="text-center text-secondary p-3">Sign in</h2>
+        <form method="POST">
+            {% csrf_token %}
+
+            <p>{{ form.username|as_crispy_field }}</p>
+            <p>{{ form.password|as_crispy_field }}</p>
+
+            <p class="text-center">
+                Don`t have an account? Register <a href="/users/register" class="text-info">here</a>
+            </p>
+
+            <!--BUTTON-->
+            <div class="row text-center p-3">
+                <div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

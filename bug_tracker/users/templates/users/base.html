@@ -1,17 +1,26 @@
+{% load static %}
 <html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--Google Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+    <!--SASS-->
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="{% static 'js/index.js' %}"></script>
+
     <title>
-        {% block title %} Auth {% endblock %}
+        {% block title %}
+            Auth
+        {% endblock %}
     </title>
 </head>
-
-<body>
-    <h1>Bug tracker</h1>
-
-    <div id="content">
-        {% block content %} {% endblock %}
-    </div>
+<body class="bg-dark">
+    {% block content %} {% endblock %}
 </body>
 </html>

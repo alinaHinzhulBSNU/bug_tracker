@@ -1,13 +1,13 @@
 //overriding bootstrap colors: (BEFORE bootstrap import)
 $theme-colors: (
-  "primary": #a2faa3,
-  "secondary": #a40e4c,
-  "info": #dddbf1,
+  "primary": #7d1538,
+  "secondary": #4b5842,
+  "info": #510d0a,
   "warning": #f2a359,
   "success": #6a7152,
-  "dark": #210f04,
+  "dark": #2f2d2e,
   "danger": #a53f2b,
-  "light": #dddbf1,
+  "light": #b5d99c,
 );
 
 *{
@@ -18,6 +18,13 @@ $theme-colors: (
         padding: 0;
         a{
             text-decoration: none;
+        }
+        #menu{
+            .menu-item{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
         #page{
             .table-container, .form-container{

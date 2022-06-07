@@ -11,6 +11,7 @@
         <h2 class="text-center text-secondary p-3">Register</h2>
         <form method="POST">
             {% csrf_token %}
+            {{ form|as_crispy_errors }}
 
             <div class="row">
                 <div class="col-md-6">

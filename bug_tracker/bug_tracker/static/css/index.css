@@ -9,10 +9,12 @@
     padding: 0; }
     * body a {
       text-decoration: none; }
-    * body #menu .menu-item {
-      display: flex;
-      align-items: center;
-      justify-content: center; }
+    * body #menu {
+      margin-left: auto; }
+      * body #menu .menu-item {
+        display: flex;
+        align-items: center;
+        justify-content: center; }
     * body #page .table-container, * body #page .form-container {
       width: 80%;
       margin: auto; }

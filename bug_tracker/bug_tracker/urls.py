@@ -21,3 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),  # admin dashboard
     path('users/', include("users.urls")),  # users app routing
 ]
+
+handler404 = "bug_tracker.views.page_404"

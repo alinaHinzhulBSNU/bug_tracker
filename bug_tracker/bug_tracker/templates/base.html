@@ -26,22 +26,21 @@
 
 <body class="d-flex flex-column min-vh-100">
     <header class="navbar navbar-dark bg-dark p-3">
-        <h1 class="navbar-brand mb-0 h1 text-center">
-            <a class="text-light" href="/">
-                Bug tracker
-            </a>
-        </h1>
-        <div id="menu" class="row">
-            <div class="menu-item col-sm-6 text-center">
-                <a href="#">
-                    <i class="fas fa-user text-light"></i>
-                    <span class="text-light">{{ user.username }}</span>
+        <div class="row">
+            <div class="col-sm-2">
+                <a class="text-light navbar-brand mb-0 h1" href="/">
+                    <img src="{% static 'img/logo.png' %}" id="logo" width="100%">
                 </a>
             </div>
-            <div class="menu-item col-sm-6 text-center">
-                <a href="/users/logout">
-                    <i class="fas fa-sign-out-alt text-light text-lg"></i>
-                </a>
+            <div id="menu" class="row col-sm-2">
+                <div class="menu-item col-sm-9 text-center">
+                    <span class="text-light">Hello, {{ user.username }}!</span>
+                </div>
+                <div class="menu-item col-sm-3 text-center">
+                    <a href="/users/logout">
+                        <i class="fas fa-sign-out-alt text-light text-lg"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </header>

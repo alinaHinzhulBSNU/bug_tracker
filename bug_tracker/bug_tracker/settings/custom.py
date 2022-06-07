@@ -1,5 +1,7 @@
 from .base import *
 
+ALLOWED_HOSTS = ["*"]
+
 TIME_ZONE = "Europe/Kiev"
 
 LOGIN_REDIRECT_URL = "/"

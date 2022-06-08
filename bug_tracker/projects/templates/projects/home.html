@@ -6,22 +6,85 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <h2 class="text-center text-secondary pb-3 pt-3">Your projects:</h2>
-    {% if request.user|has_group:"admin" %}
-    <p>For admin</p>
-    {% endif %}
+{% if projects %}
+<h2 class="text-center text-secondary pb-3 pt-3">Your projects:</h2>
+<div class="table-container">
+    <table class="table table-hover table-bordered">
+        <caption class="text-center">List of projects</caption>
+        <thead class="bg-dark text-light">
+            <tr class="text-center align-middle" scope="col">
+                <th>Name</th>
+                <th>Description</th>
+                <th>Creation time</th>
+                <th>Finished</th>
 
-    {% if request.user|has_group:"tester" %}
-    <p>For tester</p>
-    {% endif %}
+                {% if request.user|has_group:"manager" %}
+                <th>
+                    <a href="/create">
+                        <i class="fas fa-plus-circle text-light"></i>
+                    </a>
+                </th>
+                {% endif %}
+            </tr>
+        </thead>
 
-    {% if request.user|has_group:"developer" %}
-    <p>For developer</p>
-    {% endif %}
+        <tbody>
+            {% for project in projects %}
+            <tr>
+                <td class="text-center align-middle">
+                    <a href="project/{{project.id}}">
+                        <b>
+                            <h5 class="text-primary">{{project.name}}</h5>
+                        </b>
+                    </a>
+                </td>
+                <td class="align-middle">{{project.description}}</td>
+                <td class="text-center align-middle">{{project.start_time}}</td>
+                <td class="text-center align-middle">
+                    {% if project.end_time != None %}
+                        <i class="fas fa-check-circle text-success"></i>
+                    {% else %}
+                        <i class="fas fa-times-circle text-danger"></i>
+                    {% endif %}
+                </td>
 
-    {% if request.user|has_group:"manager" %}
-    <p>For manager</p>
-    {% endif %}
+                {% if request.user|has_group:"manager" %}
+                <td class="align-middle" scope="col">
+                    <ul>
+                        <li>
+                            <a href="/access/{{project.id}}">
+                                <span class="text-success">Manage Access</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/update/{{project.id}}">
+                                <span class="text-success">Update</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/delete/{{project.id}}">
+                                <span class="text-success">Delete</span>
+                            </a>
+                        </li>
+                    </ul>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
+{% else %}
+<h3 class="text-danger text-center pt-5">
+    <p>No projects yet...</p>
+    <p>
+        <i class="far fa-folder-open"></i>
+    </p>
+</h3>
+{% if request.user|has_group:"manager" %}
+<a href="/create" class="text-center">
+    <button class="btn btn-light">Create project</button>
+</a>
+{% endif %}
+{% endif %}
 {% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Manage Access
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-secondary p-3">Manage Access</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-container">
+            <form method="post" class="form-group">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <!--BUTTON-->
+                <div class="row text-center p-3">
+                    <div>
+                        <button type="submit" name="save" class="btn btn-warning">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <span>Team:</span>
+        <p>{{data}}</p>
+        <table class="table table-hover table-bordered">
+            <caption class="text-center">Team</caption>
+            <thead class="bg-dark text-light">
+                <tr class="text-center align-middle" scope="col">
+                    <th class="col-md-5">Member</th>
+                    <th class="col-md-5">Role</th>
+                    <th class="col-md-2"></th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for member in project.team.all %}
+                <tr>
+                    <td class="col-md-5 text-center align-middle">{{member.username}}</td>
+                    <td class="col-md-5 text-center align-middle">
+                        {% for group in member.groups.all %}
+                            {{ group }}
+                        {% endfor %}
+                    </td>
+                    <td class="col-md-2 text-center align-middle">
+                        <a href="/access/deny/{{project.id}}/{{member.id}}">
+                            <i class="fas fa-trash-alt text-danger"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

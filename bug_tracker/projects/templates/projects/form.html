@@ -1,9 +1,25 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 
 {% block title %}
     Project Form
 {% endblock %}
 
 {% block content %}
-<h2>Project form</h2>
+<h2 class="text-center text-secondary p-3">Project</h2>
+<div class="form-container">
+    <form method="post" class="form-group">
+        {% csrf_token %}
+
+        <p>{{ form.name|as_crispy_field }}</p>
+        <p>{{ form.description|as_crispy_field }}</p>
+
+        <!--BUTTON-->
+        <div class="row text-center p-3">
+            <div>
+                <button type="submit" name="save" class="btn btn-success">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}

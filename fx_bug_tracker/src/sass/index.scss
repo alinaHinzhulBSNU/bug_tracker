@@ -27,13 +27,19 @@ $theme-colors: (
                 justify-content: center;
             }
         }
+        .table-container, .form-container{
+            width: 80%;
+            margin: auto;
+        }
+        .table > :not(:first-child) {
+            border-top: 0;
+        }
         #page{
-            .table-container, .form-container{
-                width: 80%;
-                margin: auto;
-            }
             .label-text{
                 text-align: right;
+            }
+            #project{
+                background-color: red;
             }
         }
     }

@@ -49,7 +49,7 @@ def update(request, id):
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
 def delete(request, id):
-    Project.objects.delete(id)
+    Project.objects.filter(id=id).delete()
     return redirect(index)
 
 

@@ -3,11 +3,6 @@ from django.db import models
 from django.core import validators
 
 
-class ProjectsManager(models.Manager):
-    def delete(self, id):
-        Project.objects.filter(id=id).delete()
-
-
 # Create your models here.
 class Project(models.Model):
     name = models.CharField(
@@ -39,8 +34,6 @@ class Project(models.Model):
                + ", start time: " + str(self.start_time.strftime("%Y-%m-%d %H:%M:%S")) \
                + ", end time: " + str(self.end_time.strftime("%Y-%m-%d %H:%M:%S"))\
                + ", description: " + str(self.description)
-
-    objects = ProjectsManager()
 
     class Meta:
         verbose_name_plural = 'Projects'

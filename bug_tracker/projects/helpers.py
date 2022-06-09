@@ -1,4 +1,4 @@
-from .enums import STATUS, SEVERITY
+from .enums import REPRODUCIBILITY, SEVERITY, PRIORITY, SYMPTOM, STATUS
 
 
 def get_choice_by_code(code, choices):
@@ -13,12 +13,8 @@ def get_choice_by_value(value, choices):
             return choice[0]
 
 
-def get_status_by_code(code):
-    return get_choice_by_code(code, STATUS)
-
-
-def get_status_by_value(value):
-    return get_choice_by_value(value, STATUS)
+def get_reproducibility_by_code(code):
+    return get_choice_by_code(code, REPRODUCIBILITY)
 
 
 def get_severity_by_code(code):
@@ -27,3 +23,20 @@ def get_severity_by_code(code):
 
 def get_severity_by_value(value):
     return get_choice_by_value(value, SEVERITY)
+
+
+def get_priority_by_code(code):
+    return get_choice_by_code(code, PRIORITY)
+
+
+def get_symptom_by_code(code):
+    return get_choice_by_code(code, SYMPTOM)
+
+
+def get_status_by_code(code):
+    return get_choice_by_code(code, STATUS)
+
+
+def get_status_by_value(value):
+    return get_choice_by_value(value, STATUS)
+

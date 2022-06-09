@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+
+{% block title %}
+    Tasks
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-secondary p-3">Tasks  backlog:</h2>
+
+<div class="table-container">
+    <table class="table table-hover table-bordered">
+        <caption class="text-center">Tasks</caption>
+        <thead class="bg-dark text-light">
+            <tr class="text-center align-middle" scope="col">
+                <th>Text</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Performer</th>
+                <th>In progress</th>
+                {% if request.user|has_group:"manager" %}
+                <th></th>
+                <th>
+                    <a href="/add_task/{{project.id}}">
+                        <i class="fas fa-plus-circle text-light"></i>
+                    </a>
+                </th>
+                {% endif %}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for task in project.task_set.all %}
+            <tr>
+                <td class="text-center align-middle">
+                    {{task.text}}
+                </td>
+                <td class="text-center align-middle">
+                    {{task.get_severity}}
+                </td>
+                <td class="text-center align-middle">
+                    {{task.get_status}}
+                </td>
+                <td class="text-center align-middle">
+                    {{task.performer.username}}
+                </td>
+                <td class="text-center align-middle">
+                    {% if task.get_status != 'backlog' %}
+                    <a href="/delete_from_dashboard/{{project.id}}/{{task.id}}">
+                        <i class="fas fa-check-circle text-info"></i>
+                    </a>
+                    {% else %}
+                    <a href="/add_to_dashboard/{{project.id}}/{{task.id}}">
+                        <i class="fas fa-times-circle text-info"></i>
+                    </a>
+                    {% endif %}
+                </td>
+                {% if request.user|has_group:"manager" %}
+                <td class="text-center align-middle">
+                    <a href="/update_task/{{project.id}}/{{task.id}}">
+                        <i class="fas fa-pencil-alt text-danger"></i>
+                    </a>
+                </td>
+                <td class="text-center align-middle">
+                    <a href="/delete_task/{{project.id}}/{{task.id}}">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

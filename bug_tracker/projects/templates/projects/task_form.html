@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Task Form
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-secondary pt-3">Task form:</h2>
+
+<div class="form-container">
+    <form method="post" class="form-group">
+        {% csrf_token %}
+
+        <div class="row">
+            <p>{{ form.text|as_crispy_field }}</p>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <p>{{ form.severity|as_crispy_field }}</p>
+            </div>
+            <div class="col-md-4">
+                <p>{{ form.status|as_crispy_field }}</p>
+            </div>
+            <div class="col-md-4">
+                <p>{{ form.performer|as_crispy_field }}</p>
+            </div>
+        </div>
+
+        <!--BUTTON-->
+        <div class="row text-center p-3">
+            <div>
+                <button type="submit" name="save" class="btn btn-warning">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

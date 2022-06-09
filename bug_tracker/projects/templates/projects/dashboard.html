@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-secondary p-3">Kanban board</h2>
+<a href="/tasks/{{project.id}}">Tasks backlog</a>
+<a href="/bugs/{{project.id}}">Bugs backlog</a>
+{% endblock %}

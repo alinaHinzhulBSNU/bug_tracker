@@ -32,7 +32,7 @@
             {% for project in projects %}
             <tr>
                 <td class="text-center align-middle">
-                    <a href="project/{{project.id}}">
+                    <a href="/dashboard/{{project.id}}">
                         <b>
                             <h5 class="text-primary">{{project.name}}</h5>
                         </b>
@@ -52,7 +52,7 @@
                 <td class="align-middle" scope="col">
                     <ul>
                         <li>
-                            <a href="/access/{{project.id}}">
+                            <a href="/allow_access/{{project.id}}">
                                 <span class="text-success">Manage Access</span>
                             </a>
                         </li>

@@ -6,6 +6,14 @@
 {% endblock %}
 
 {% block content %}
+<p class="text-center pt-3 link">
+    <a href="/dashboard/{{project.id}}">
+        <span>
+            <i class="fas fa-arrow-circle-left"></i>&nbspDashboard
+        </span>
+    </a>
+</p>
+
 <h2 class="text-center text-secondary p-3">Tasks  backlog:</h2>
 
 <div class="table-container">
@@ -13,14 +21,13 @@
         <caption class="text-center">Tasks</caption>
         <thead class="bg-dark text-light">
             <tr class="text-center align-middle" scope="col">
-                <th>Text</th>
-                <th>Severity</th>
-                <th>Status</th>
-                <th>Performer</th>
-                <th>In progress</th>
+                <th class="col-md-6">
+                    Text
+                </th>
+                <th class="col-md-2"></th>
                 {% if request.user|has_group:"manager" %}
-                <th></th>
-                <th>
+                <th class="col-md-2"></th>
+                <th class="col-md-2">
                     <a href="/add_task/{{project.id}}">
                         <i class="fas fa-plus-circle text-light"></i>
                     </a>
@@ -32,36 +39,35 @@
         <tbody>
             {% for task in project.task_set.all %}
             <tr>
-                <td class="text-center align-middle">
-                    {{task.text}}
+                <td class="col-md-6 align-middle">
+                    <a href="/task/{{project.id}}/{{task.id}}">
+                        <b>
+                            <span class="text-primary">{{task.text}}</span>
+                        </b>
+                    </a>
                 </td>
-                <td class="text-center align-middle">
-                    {{task.get_severity}}
-                </td>
-                <td class="text-center align-middle">
-                    {{task.get_status}}
-                </td>
-                <td class="text-center align-middle">
-                    {{task.performer.username}}
-                </td>
-                <td class="text-center align-middle">
+                <td class="col-md-2 text-center align-middle">
                     {% if task.get_status != 'backlog' %}
-                    <a href="/delete_from_dashboard/{{project.id}}/{{task.id}}">
-                        <i class="fas fa-check-circle text-info"></i>
+                    <a href="/delete_task_from_dashboard/{{project.id}}/{{task.id}}">
+                        <span class="text-success">
+                            <i class="fas fa-check-circle"></i>&nbspOn dashboard
+                        </span>
                     </a>
                     {% else %}
-                    <a href="/add_to_dashboard/{{project.id}}/{{task.id}}">
-                        <i class="fas fa-times-circle text-info"></i>
+                    <a href="/add_task_to_dashboard/{{project.id}}/{{task.id}}">
+                        <span class="text-danger">
+                            <i class="fas fa-times-circle text-info"></i>&nbspOn dashboard
+                        </span>
                     </a>
                     {% endif %}
                 </td>
                 {% if request.user|has_group:"manager" %}
-                <td class="text-center align-middle">
+                <td class="col-md-2 text-center align-middle">
                     <a href="/update_task/{{project.id}}/{{task.id}}">
-                        <i class="fas fa-pencil-alt text-danger"></i>
+                        <i class="fas fa-pencil-alt text-warning"></i>
                     </a>
                 </td>
-                <td class="text-center align-middle">
+                <td class="col-md-2 text-center align-middle">
                     <a href="/delete_task/{{project.id}}/{{task.id}}">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </a>
@@ -72,4 +78,10 @@
         </tbody>
     </table>
 </div>
+
+<p class="text-center">
+    <a href="/load_tasks_in_csv/{{project.id}}">
+        <button class="btn btn-success">Load CSV</button>
+    </a>
+</p>
 {% endblock %}

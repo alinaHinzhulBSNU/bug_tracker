@@ -6,7 +6,12 @@
 {% endblock %}
 
 {% block content %}
-<h2 class="text-center text-secondary p-3">Kanban board</h2>
-<a href="/tasks/{{project.id}}">Tasks backlog</a>
-<a href="/bugs/{{project.id}}">Bugs backlog</a>
+<p class="text-center p-3 link">
+    <a href="/tasks/{{project.id}}" class="link">Tasks backlog</a>
+    <span class="text-info">/</span>
+    <a href="/bugs/{{project.id}}" class="link">Bugs backlog</a>
+    <span class="text-info">/</span>
+    <a href="/statistic/{{project.id}}">Statistic</a>
+</p>
+<h2 class="text-center text-secondary">Kanban board</h2>
 {% endblock %}

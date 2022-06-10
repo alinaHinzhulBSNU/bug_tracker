@@ -171,7 +171,14 @@ class Bug(models.Model):
         null=False,
         blank=False,
         default=False,
-        verbose_name="Workaround"
+        verbose_name="Workaround",
+    )
+
+    image = models.ImageField(
+        null=True,
+        blank=True,
+        verbose_name="Image",
+        upload_to="images/",
     )
 
     start_time = models.DateTimeField(

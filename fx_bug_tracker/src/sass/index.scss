@@ -1,7 +1,17 @@
+// General
+$primary: #7d1538;
+$secondary: #4b5842;
+
+// For items
+$minor: #caffc4;
+$medium: #f2ffc4;
+$major: #ffdac4;
+$critical: #ffc4c4;
+
 //overriding bootstrap colors: (BEFORE bootstrap import)
 $theme-colors: (
-  "primary": #7d1538,
-  "secondary": #4b5842,
+  "primary": $primary,
+  "secondary": $secondary,
   "info": #510d0a,
   "warning": #f2a359,
   "success": #6a7152,
@@ -35,11 +45,24 @@ $theme-colors: (
             border-top: 0;
         }
         #page{
-            .label-text{
-                text-align: right;
+            .link a{
+                font-size: 18px;
+                color: $primary;
+                &:hover{
+                  color: $secondary;
+                }
             }
-            #project{
-                background-color: red;
+            .minor{
+                background-color: $minor;
+            }
+            .medium{
+                background-color: $medium;
+            }
+            .major{
+                background-color: $major;
+            }
+            .critical{
+                background-color: $critical;
             }
         }
     }

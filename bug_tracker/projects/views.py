@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+import csv
 from .decorators import allowed_users
 from .forms import ProjectForm, TaskForm, ManageAccessForm
 from .models import Project, Task
@@ -8,62 +10,57 @@ from .helpers import get_status_by_value
 
 
 # PROJECTS
-# Read projects
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def index(request):
+def read_projects(request):
     projects = request.user.project_set.all()
     return render(request, "projects/projects.html", {"projects": projects})
 
 
-# Create project
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
-def create(request):
+def create_project(request):
     if request.POST:
         form = ProjectForm(request.POST)
         if form.is_valid():
             project = form.save()
             project.team.add(request.user)
             project.save()
-            return redirect(index)
+            return redirect("/")
     else:
         form = ProjectForm()
 
     return render(request, "projects/project_form.html", {"form": form})
 
 
-# Update project
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
-def update(request, id):
-    project = Project.objects.get(id=id)
+def update_project(request, project_id):
+    project = Project.objects.get(id=project_id)
 
     if request.POST:
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            return redirect(index)
+            return redirect("/")
     else:
         form = ProjectForm(instance=project)
 
     return render(request, "projects/project_form.html", {"form": form})
 
 
-# Delete project
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
-def delete(request, id):
-    Project.objects.filter(id=id).delete()
-    return redirect(index)
+def delete_project(request, project_id):
+    Project.objects.filter(id=project_id).delete()
+    return redirect("/")
 
 
-# Allow access to project
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
-def allow_access(request, id):
+def allow_access(request, project_id):
     form = ManageAccessForm()
-    project = Project.objects.get(id=id)
+    project = Project.objects.get(id=project_id)
 
     if request.POST:
         project.team.add(request.POST["member"])
@@ -72,7 +69,6 @@ def allow_access(request, id):
     return render(request, "projects/access.html", {"form": form, "project": project})
 
 
-# Deny access to project
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
 def deny_access(request, project_id, user_id):
@@ -85,24 +81,28 @@ def deny_access(request, project_id, user_id):
     return redirect("/allow_access/" + str(project_id))
 
 
-# Display project
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def dashboard(request, id):
-    project = Project.objects.get(id=id)
+def dashboard(request, project_id):
+    project = Project.objects.get(id=project_id)
     return render(request, "projects/dashboard.html", {"project": project})
 
 
 # TASKS
-# Read tasks
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def tasks(request, id):
-    project = Project.objects.get(id=id)
+def read_tasks(request, project_id):
+    project = Project.objects.get(id=project_id)
     return render(request, "projects/tasks.html", {"project": project})
 
 
-# Add task
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def read_task(request, project_id, task_id):
+    task = Task.objects.get(id=task_id)
+    return render(request, "projects/task.html", {"task": task, "project_id": project_id})
+
+
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
 def add_task(request, id):
@@ -125,7 +125,6 @@ def add_task(request, id):
     return render(request, "projects/task_form.html", {"form": form, "project": project})
 
 
-# Update task
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
 def update_task(request, project_id, task_id):
@@ -145,7 +144,6 @@ def update_task(request, project_id, task_id):
     return render(request, "projects/task_form.html", {"form": form})
 
 
-# Delete task
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
 def delete_task(request, project_id, task_id):
@@ -153,34 +151,59 @@ def delete_task(request, project_id, task_id):
     return redirect("/tasks/" + str(project_id))
 
 
-# Add task to dashboard
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def add_to_dashboard(request, project_id, task_id):
-    task = Task.objects.filter(id=task_id)
-    task.status = "1"  # to do
-    task.save()
-    return redirect("/tasks/" + str(project_id))
-
-
-# Add task to dashboard
-@login_required(login_url="/users/login")
-@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def add_to_dashboard(request, project_id, task_id):
+def add_task_to_dashboard(request, project_id, task_id):
     task = Task.objects.get(id=task_id)
     task.status = get_status_by_value("to do")
     task.save()
     return redirect("/tasks/" + str(project_id))
 
 
-# Remove task from dashboard
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def delete_from_dashboard(request, project_id, task_id):
+def delete_task_from_dashboard(request, project_id, task_id):
     task = Task.objects.get(id=task_id)
     task.status = get_status_by_value("backlog")
     task.save()
     return redirect("/tasks/" + str(project_id))
+
+
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def load_tasks_in_csv(request, project_id):
+    project = Project.objects.get(id=project_id)
+
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="tasks.csv"'},
+    )
+
+    writer = csv.writer(response)
+    for task in project.task_set.all():
+        writer.writerow([task.id,
+                         task.text,
+                         task.get_severity(),
+                         task.get_status(),
+                         task.performer.username])
+
+    return response
+
+
+# BUGS
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def read_bugs(request, id):
+    project = Project.objects.get(id=id)
+    return render(request, "projects/bugs.html", {"project": project})
+
+
+# STATISTIC
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def get_statistic(request, id):
+    project = Project.objects.get(id=id)
+    return render(request, "projects/statistic.html", {"project": project})
 
 
 # RESTRICTED

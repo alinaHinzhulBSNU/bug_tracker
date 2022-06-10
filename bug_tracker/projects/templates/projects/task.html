@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+
+{% block title %}
+    Task
+{% endblock %}
+
+{% block content %}
+<p class="text-center pt-3 link">
+    <a href="/tasks/{{project_id}}">
+        <span>
+            <i class="fas fa-arrow-circle-left"></i>&nbspAll tasks
+        </span>
+    </a>
+</p>
+
+<h2 class="text-center text-secondary p-3">Task:</h2>
+
+<div class="row align-items-center justify-content-center">
+    <div class="col-md-6 row p-3 rounded {{task.get_severity}}">
+        <div class="row">
+            <div class="col-sm-2">
+                <b>Text:</b>
+            </div>
+            <div class="col-sm-10">
+                <span>{{task.text}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <b>Severity:</b>
+            </div>
+            <div class="col-sm-10">
+                <span>{{task.get_severity}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <b>Status:</b>
+            </div>
+            <div class="col-sm-10">
+                <span>{{task.get_status}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <b>Performer:</b>
+            </div>
+            <div class="col-sm-10">
+                <span>{{task.performer.username}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

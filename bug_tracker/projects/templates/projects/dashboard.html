@@ -7,11 +7,26 @@
 
 {% block content %}
 <p class="text-center p-3 link">
-    <a href="/tasks/{{project.id}}" class="link">Tasks backlog</a>
+    <a href="/tasks/{{project_id}}" class="link">Tasks backlog</a>
     <span class="text-info">/</span>
-    <a href="/bugs/{{project.id}}" class="link">Bugs backlog</a>
+    <a href="/bugs/{{project_id}}" class="link">Bugs backlog</a>
     <span class="text-info">/</span>
-    <a href="/statistic/{{project.id}}">Statistic</a>
+    <a href="/statistic/{{project_id}}">Statistic</a>
 </p>
+
 <h2 class="text-center text-secondary">Kanban board</h2>
+
+<div id="board" class="row p-3">
+    <div class="col-md-4">
+        <h4 class="text-center text-info">To Do:</h4>
+    </div>
+
+    <div class="col-md-4">
+        <h4 class="text-center text-info">Doing:</h4>
+    </div>
+
+    <div class="col-md-4">
+        <h4 class="text-center text-info">Done:</h4>
+    </div>
+</div>
 {% endblock %}

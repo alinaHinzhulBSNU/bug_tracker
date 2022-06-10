@@ -19,41 +19,79 @@
 <div class="row align-items-center justify-content-center">
     <div class="col-md-6 row p-3 rounded {{task.get_severity}}">
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <b>Text:</b>
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-9">
                 <span>{{task.text}}</span>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <b>Severity:</b>
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-9">
                 <span>{{task.get_severity}}</span>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <b>Status:</b>
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-9">
                 <span>{{task.get_status}}</span>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <b>Performer:</b>
             </div>
-            <div class="col-sm-10">
+            <div class="col-sm-9">
                 <span>{{task.performer.username}}</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <b>Start time:</b>
+            </div>
+            <div class="col-sm-9">
+                <span>
+                    {% if task.start_time is None %}
+                    Is not started yet
+                    {% else %}
+                    {{task.start_time}}
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <b>End time:</b>
+            </div>
+            <div class="col-sm-9">
+                <span>
+                    {% if task.end_time is None%}
+                    Is not finished yet
+                    {% else %}
+                    {{task.end_time}}
+                    {% endif %}
+                </span>
             </div>
         </div>
     </div>
 </div>
 
+
+<p class="text-center p-3">
+    <a href="/predict_for_task/{{project_id}}/{{task.id}}">
+        <button class="btn btn-success">Predict time</button>
+    </a>
+</p>
+
+<h3 class="text-center p-3 text-info">{{prediction}}</h3>
 {% endblock %}

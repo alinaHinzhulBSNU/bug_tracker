@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -14,7 +16,11 @@ from .helpers import get_status_by_value
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
 def read_projects(request):
     projects = request.user.project_set.all()
-    return render(request, "projects/projects.html", {"projects": projects})
+    return render(
+        request,
+        "projects/projects.html",
+        {"projects": projects}
+    )
 
 
 @login_required(login_url="/users/login")
@@ -30,7 +36,11 @@ def create_project(request):
     else:
         form = ProjectForm()
 
-    return render(request, "projects/project_form.html", {"form": form})
+    return render(
+        request,
+        "projects/project_form.html",
+        {"form": form}
+    )
 
 
 @login_required(login_url="/users/login")
@@ -46,7 +56,11 @@ def update_project(request, project_id):
     else:
         form = ProjectForm(instance=project)
 
-    return render(request, "projects/project_form.html", {"form": form})
+    return render(
+        request,
+        "projects/project_form.html",
+        {"form": form}
+    )
 
 
 @login_required(login_url="/users/login")
@@ -66,7 +80,11 @@ def allow_access(request, project_id):
         project.team.add(request.POST["member"])
         project.save()
 
-    return render(request, "projects/access.html", {"form": form, "project": project})
+    return render(
+        request,
+        "projects/access.html",
+        {"form": form, "project": project}
+    )
 
 
 @login_required(login_url="/users/login")
@@ -85,7 +103,13 @@ def deny_access(request, project_id, user_id):
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
 def dashboard(request, project_id):
     project = Project.objects.get(id=project_id)
-    return render(request, "projects/dashboard.html", {"project": project})
+    return render(
+        request,
+        "projects/dashboard.html",
+        {
+            "project_id": project_id,
+        }
+    )
 
 
 # TASKS
@@ -93,20 +117,31 @@ def dashboard(request, project_id):
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
 def read_tasks(request, project_id):
     project = Project.objects.get(id=project_id)
-    return render(request, "projects/tasks.html", {"project": project})
+
+    return render(
+        request,
+        "projects/tasks.html",
+        {"project": project}
+    )
 
 
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
 def read_task(request, project_id, task_id):
     task = Task.objects.get(id=task_id)
-    return render(request, "projects/task.html", {"task": task, "project_id": project_id})
+
+    return render(
+        request,
+        "projects/task.html",
+        {"prediction": "",
+         "task": task,
+         "project_id": project_id})
 
 
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["manager"])
-def add_task(request, id):
-    project = Project.objects.get(id=id)
+def add_task(request, project_id):
+    project = Project.objects.get(id=project_id)
     form = TaskForm(project=project, initial={"project": project})
 
     if request.POST:
@@ -120,9 +155,13 @@ def add_task(request, id):
 
         task.save()
 
-        return redirect("/tasks/" + str(id))
+        return redirect("/tasks/" + str(project_id))
 
-    return render(request, "projects/task_form.html", {"form": form, "project": project})
+    return render(
+        request,
+        "projects/task_form.html",
+        {"form": form, "project": project}
+    )
 
 
 @login_required(login_url="/users/login")
@@ -141,7 +180,11 @@ def update_task(request, project_id, task_id):
     else:
         form = TaskForm(project=project, instance=task)
 
-    return render(request, "projects/task_form.html", {"form": form})
+    return render(
+        request,
+        "projects/task_form.html",
+        {"form": form}
+    )
 
 
 @login_required(login_url="/users/login")
@@ -156,7 +199,9 @@ def delete_task(request, project_id, task_id):
 def add_task_to_dashboard(request, project_id, task_id):
     task = Task.objects.get(id=task_id)
     task.status = get_status_by_value("to do")
+    task.start_time = datetime.datetime.now()
     task.save()
+
     return redirect("/tasks/" + str(project_id))
 
 
@@ -165,7 +210,9 @@ def add_task_to_dashboard(request, project_id, task_id):
 def delete_task_from_dashboard(request, project_id, task_id):
     task = Task.objects.get(id=task_id)
     task.status = get_status_by_value("backlog")
+    task.start_time = None
     task.save()
+
     return redirect("/tasks/" + str(project_id))
 
 
@@ -190,12 +237,29 @@ def load_tasks_in_csv(request, project_id):
     return response
 
 
+# Predict time for task
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def predict_for_task(request, project_id, task_id):
+    prediction = "No prediction"
+    task = Task.objects.get(id=task_id)
+
+    return render(request,
+                  "projects/task.html",
+                  {"prediction": prediction,
+                   "task": task,
+                   "project_id": project_id})
+
+
 # BUGS
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
 def read_bugs(request, id):
     project = Project.objects.get(id=id)
-    return render(request, "projects/bugs.html", {"project": project})
+    return render(
+        request,
+        "projects/bugs.html",
+        {"project": project})
 
 
 # STATISTIC

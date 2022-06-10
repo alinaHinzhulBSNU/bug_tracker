@@ -51,6 +51,9 @@ urlpatterns = [
     path("load_tasks_in_csv/<int:project_id>",
          views.load_tasks_in_csv,
          name="load_tasks_in_csv"),
+    path("predict_for_task/<int:project_id>/<int:task_id>",
+         views.predict_for_task,
+         name="predict_for_task"),
 
 
     # Bugs

@@ -1,14 +1,16 @@
 import datetime
+import csv
 
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-import csv
+
 from .decorators import allowed_users
 from .forms import ProjectForm, TaskForm, ManageAccessForm
 from .models import Project, Task
 from .helpers import get_status_by_value
+from .analytics import get_data_for_statistics
 
 
 # PROJECTS
@@ -313,9 +315,20 @@ def read_bugs(request, id):
 # STATISTIC
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def get_statistic(request, id):
-    project = Project.objects.get(id=id)
-    return render(request, "projects/statistic.html", {"project": project})
+def get_statistic(request, project_id):
+    project = Project.objects.get(id=project_id)
+    tasks = project.task_set.all()
+
+    tasks_data = get_data_for_statistics(tasks)
+
+    return render(
+        request,
+        "projects/statistic.html",
+        {
+            "project_id": project_id,
+            "tasks_data": tasks_data,
+        }
+    )
 
 
 # RESTRICTED

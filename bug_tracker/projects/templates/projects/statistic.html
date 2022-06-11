@@ -7,7 +7,7 @@
 
 {% block content %}
 <p class="text-center pt-3 link">
-    <a href="/dashboard/{{project.id}}">
+    <a href="/dashboard/{{project_id}}">
         <span>
             <i class="fas fa-arrow-circle-left"></i>&nbspDashboard
         </span>
@@ -15,4 +15,40 @@
 </p>
 
 <h2 class="text-center text-secondary p-3">Statistic</h2>
+
+<div class="row align-items-center justify-content-center">
+    <div class="col-md-3">
+        <canvas id="tasks" class="p-3"></canvas>
+        <p class="text-center">Tasks statistic</p>
+    </div>
+</div>
+
+<script>
+const tasks_ctx = document.getElementById('tasks');
+const tasks = new Chart(tasks_ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['To do', 'Doing', 'Done'],
+        datasets: [{
+            label: 'Tasks',
+            data: [
+                {% if tasks_data.1 is None %}0{% else %}{{tasks_data.1}}{% endif%},
+                {% if tasks_data.2 is None %}0{% else %}{{tasks_data.2}}{% endif%},
+                {% if tasks_data.3 is None %}0{% else %}{{tasks_data.3}}{% endif%},
+            ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.5)',
+                'rgba(54, 162, 235, 0.5)',
+                'rgba(255, 206, 86, 0.5)',
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+            ],
+            borderWidth: 0,
+        }]
+    },
+});
+</script>
 {% endblock %}

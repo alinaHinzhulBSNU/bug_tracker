@@ -70,7 +70,7 @@ urlpatterns = [
          name="read_bugs"),
 
     # Statistics
-    path("statistic/<int:id>",
+    path("statistic/<int:project_id>",
          views.get_statistic,
          name="statistic"),
 

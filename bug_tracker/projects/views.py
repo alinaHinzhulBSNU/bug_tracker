@@ -103,11 +103,19 @@ def deny_access(request, project_id, user_id):
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
 def dashboard(request, project_id):
     project = Project.objects.get(id=project_id)
+
+    to_do = project.task_set.filter(status=get_status_by_value("to do"))
+    doing = project.task_set.filter(status=get_status_by_value("doing"))
+    done = project.task_set.filter(status=get_status_by_value("done"))
+
     return render(
         request,
         "projects/dashboard.html",
         {
             "project_id": project_id,
+            "to_do": to_do,
+            "doing": doing,
+            "done": done,
         }
     )
 
@@ -235,6 +243,46 @@ def load_tasks_in_csv(request, project_id):
                          task.performer.username])
 
     return response
+
+
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def set_task_to_do(request, project_id, task_id):
+    task = Task.objects.get(id=task_id)
+
+    task.status = get_status_by_value("to do")
+    task.start_time = datetime.datetime.now()
+    task.end_time = None
+
+    task.save()
+
+    return redirect("/dashboard/" + str(project_id))
+
+
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def set_task_doing(request, project_id, task_id):
+    task = Task.objects.get(id=task_id)
+
+    task.status = get_status_by_value("doing")
+    task.end_time = None
+
+    task.save()
+
+    return redirect("/dashboard/" + str(project_id))
+
+
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def set_task_done(request, project_id, task_id):
+    task = Task.objects.get(id=task_id)
+
+    task.status = get_status_by_value("done")
+    task.end_time = datetime.datetime.now()
+
+    task.save()
+
+    return redirect("/dashboard/" + str(project_id))
 
 
 # Predict time for task

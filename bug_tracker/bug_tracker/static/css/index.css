@@ -33,6 +33,8 @@
       background-color: #ffdac4; }
     * body #page .critical {
       background-color: #ffc4c4; }
+    * body #page .hide {
+      display: none; }
 
 /*!
  * Bootstrap v5.1.3 (https://getbootstrap.com/)

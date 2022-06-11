@@ -54,7 +54,15 @@ urlpatterns = [
     path("predict_for_task/<int:project_id>/<int:task_id>",
          views.predict_for_task,
          name="predict_for_task"),
-
+    path("set_task_to_do/<int:project_id>/<int:task_id>",
+         views.set_task_to_do,
+         name="set_task_to_do"),
+    path("set_task_doing/<int:project_id>/<int:task_id>",
+         views.set_task_doing,
+         name="set_task_doing"),
+    path("set_task_done/<int:project_id>/<int:task_id>",
+         views.set_task_done,
+         name="set_task_done"),
 
     # Bugs
     path("bugs/<int:id>",

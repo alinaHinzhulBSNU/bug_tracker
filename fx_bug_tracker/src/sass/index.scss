@@ -64,6 +64,9 @@ $theme-colors: (
             .critical{
                 background-color: $critical;
             }
+            .hide{
+                display: none;
+            }
         }
     }
 }

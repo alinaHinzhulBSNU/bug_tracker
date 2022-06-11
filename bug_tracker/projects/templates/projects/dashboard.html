@@ -17,16 +17,97 @@
 <h2 class="text-center text-secondary">Kanban board</h2>
 
 <div id="board" class="row p-3">
-    <div class="col-md-4">
+    <div id="to_do" class="col-md-4 js-zone">
         <h4 class="text-center text-info">To Do:</h4>
+        {% for to_do_task in to_do %}
+        <div id="{{to_do_task.id}}" class="row rounded m-3 {{to_do_task.get_severity}} js-item" draggable="true">
+            <p>
+                <b>{{to_do_task.text}}</b>
+            </p>
+            <p>{{to_do_task.performer.username}}</p>
+            <p>{{to_do_task.start_time}}</p>
+        </div>
+        {% endfor %}
     </div>
 
-    <div class="col-md-4">
+    <div id="doing" class="col-md-4 js-zone">
         <h4 class="text-center text-info">Doing:</h4>
+        {% for doing_task in doing %}
+        <div id="{{doing_task.id}}" class="row rounded m-3 {{doing_task.get_severity}} js-item" draggable="true">
+            <p>
+                <b>{{doing_task.text}}</b>
+            </p>
+            <p>{{doing_task.performer.username}}</p>
+            <p>{{doing_task.start_time}}</p>
+        </div>
+        {% endfor %}
     </div>
 
-    <div class="col-md-4">
+    <div id="done" class="col-md-4 js-zone">
         <h4 class="text-center text-info">Done:</h4>
+        {% for done_task in done %}
+        <div id="{{done_task.id}}" class="row rounded m-3 {{done_task.get_severity}} js-item" draggable="true">
+            <p>
+                <b>{{done_task.text}}</b>
+            </p>
+            <p>{{done_task.performer.username}}</p>
+            <p>{{done_task.start_time}}</p>
+        </div>
+        {% endfor %}
     </div>
 </div>
+
+<script>
+    // Draggable elements
+    const items = document.getElementsByClassName("js-item");
+
+    for (var i = 0; i < items.length; ++i) {
+        var item = items[i];
+        item.ondragstart = drag_start;
+        item.ondragend = drag_end;
+    }
+
+    function drag_start(event){
+        let id = event.target.id;
+        task = document.getElementById(id);
+
+        setTimeout(() => {
+            task.classList.add("hide");
+        }, 0);
+
+        event.dataTransfer.setData("id", id);
+    }
+
+    function drag_end(event){
+        window.location.href = '/dashboard/' + {{project_id}};
+    }
+
+    // Drop zones
+    const zones = document.getElementsByClassName("js-zone");
+
+    for (var i = 0; i < zones.length; ++i) {
+        var zone = zones[i];
+        zone.ondragover = allow_drop;
+        zone.ondrop = drop;
+    }
+
+    function allow_drop(event){
+        event.preventDefault();
+    }
+
+    function drop(event){
+        let zone_id = event.target.id;
+        let task_id = event.dataTransfer.getData("id");
+
+        if(zone_id === "to_do"){
+            window.location.href = '/set_task_to_do/' + {{project_id}} + '/' + task_id;
+        }
+        else if(zone_id === "doing"){
+            window.location.href = '/set_task_doing/' + {{project_id}} + '/' + task_id;
+        }
+        else if(zone_id === "done"){
+            window.location.href = '/set_task_done/' + {{project_id}} + '/' + task_id;
+        }
+    }
+</script>
 {% endblock %}

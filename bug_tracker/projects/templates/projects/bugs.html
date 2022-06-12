@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
+{% load custom_tags %}
 
 {% block title %}
     Bugs
@@ -9,10 +9,83 @@
 <p class="text-center pt-3 link">
     <a href="/dashboard/{{project.id}}">
         <span>
-            <i class="fas fa-arrow-circle-left"></i>&nbspDashboard
+            <i class="fas fa-arrow-circle-left"></i>&nbsp;Dashboard
         </span>
     </a>
 </p>
 
-<h2 class="text-center text-secondary p-3">Bugs backlog:</h2>
+<h2 class="text-center text-secondary p-3">Bugs  backlog:</h2>
+
+<p class="text-center link">
+    <a href="#" class="link">Get bugs statistic</a>
+</p>
+
+<div class="table-container">
+    <table class="table table-hover table-bordered">
+        <caption class="text-center">Bugs</caption>
+        <thead class="bg-dark text-light">
+            <tr class="text-center align-middle" scope="col">
+                <th class="col-md-6">
+                    Summary
+                </th>
+                <th class="col-md-2"></th>
+                {% if request.user|has_group:"manager" %}
+                <th class="col-md-2"></th>
+                <th class="col-md-2">
+                    <a href="#">
+                        <i class="fas fa-plus-circle text-light"></i>
+                    </a>
+                </th>
+                {% endif %}
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for bug in project.bug_set.all %}
+            <tr>
+                <td class="col-md-6 align-middle">
+                    <a href="#">
+                        <b>
+                            <span class="text-primary">{{bug.summary}}</span>
+                        </b>
+                    </a>
+                </td>
+                <td class="col-md-2 text-center align-middle">
+                    {% if bug.get_status != 'backlog' %}
+                    <a href="#">
+                        <span class="text-success">
+                            <i class="fas fa-check-circle"></i>&nbsp;On dashboard
+                        </span>
+                    </a>
+                    {% else %}
+                    <a href="#">
+                        <span class="text-danger">
+                            <i class="fas fa-times-circle text-info"></i>&nbsp;On dashboard
+                        </span>
+                    </a>
+                    {% endif %}
+                </td>
+                {% if request.user|has_group:"manager" %}
+                <td class="col-md-2 text-center align-middle">
+                    <a href="#">
+                        <i class="fas fa-pencil-alt text-warning"></i>
+                    </a>
+                </td>
+                <td class="col-md-2 text-center align-middle">
+                    <a href="#">
+                        <i class="fas fa-trash-alt text-danger"></i>
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p class="text-center">
+    <a href="#">
+        <button class="btn btn-success">Load CSV</button>
+    </a>
+</p>
 {% endblock %}

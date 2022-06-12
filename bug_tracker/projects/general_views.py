@@ -52,6 +52,28 @@ def get_tasks_statistic(request, project_id):
     )
 
 
+@login_required(login_url="/users/login")
+@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+def get_bugs_statistic(request, project_id):
+    project = Project.objects.get(id=project_id)
+    bugs = project.bug_set.all()
+
+    data = get_data_for_statistics(bugs)
+    description = "Bugs statistic"
+    label = "Bugs"
+
+    return render(
+        request,
+        "projects/statistic.html",
+        {
+            "project_id": project_id,
+            "data": data,
+            "description": description,
+            "label": label,
+        }
+    )
+
+
 # RESTRICTED
 @login_required(login_url="/users/login")
 def restricted(request):

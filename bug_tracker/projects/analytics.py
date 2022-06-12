@@ -38,6 +38,44 @@ def predict_time_for_task_by_ml(performer, severity, tasks):
         return numpy.timedelta64(prediction, "D")
 
 
+def predict_time_for_bug_by_ml(performer, severity, bugs):
+    bugs_data = list_to_dataframe(bugs)
+
+    if bugs_data is not None:
+        # Clean data
+        X = bugs_data.drop(columns=[  # data (input)
+            "id",
+            "_state",
+            "summary",
+            "description",
+            "reproducibility",
+            "priority",
+            "symptom",
+            "workaround",
+            "first_screenshot",
+            "second_screenshot",
+            "third_screenshot",
+            "start_time",
+            "end_time",
+            "status",
+            "project_id", ]
+        )
+
+        y = bugs_data["end_time"] - bugs_data["start_time"]  # answers (output)
+
+        # Split data into Training/Test sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+
+        # Train model
+        model = DecisionTreeClassifier()
+        model.fit(X_train, y_train)
+
+        # Make prediction
+        prediction = model.predict([[severity, performer.id]])[0]
+
+        return numpy.timedelta64(prediction, "D")
+
+
 def list_to_dataframe(list_of_models):
     if len(list_of_models) > 0:
         row = list_of_models[0].__dict__

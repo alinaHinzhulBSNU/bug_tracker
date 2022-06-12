@@ -32,18 +32,22 @@ def dashboard(request, project_id):
 # STATISTIC
 @login_required(login_url="/users/login")
 @allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
-def get_statistic(request, project_id):
+def get_tasks_statistic(request, project_id):
     project = Project.objects.get(id=project_id)
     tasks = project.task_set.all()
 
-    tasks_data = get_data_for_statistics(tasks)
+    data = get_data_for_statistics(tasks)
+    description = "Tasks statistic"
+    label = "Tasks"
 
     return render(
         request,
         "projects/statistic.html",
         {
             "project_id": project_id,
-            "tasks_data": tasks_data,
+            "data": data,
+            "description": description,
+            "label": label,
         }
     )
 

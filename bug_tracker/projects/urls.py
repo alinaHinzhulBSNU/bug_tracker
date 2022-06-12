@@ -70,9 +70,9 @@ urlpatterns = [
          name="read_bugs"),
 
     # Statistics
-    path("statistic/<int:project_id>",
-         views.get_statistic,
-         name="statistic"),
+    path("tasks_statistic/<int:project_id>",
+         views.get_tasks_statistic,
+         name="tasks_statistic"),
 
     # Restricted
     path("restricted/",

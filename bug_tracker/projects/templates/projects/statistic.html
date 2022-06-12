@@ -9,7 +9,7 @@
 <p class="text-center pt-3 link">
     <a href="/dashboard/{{project_id}}">
         <span>
-            <i class="fas fa-arrow-circle-left"></i>&nbspDashboard
+            <i class="fas fa-arrow-circle-left"></i>&nbsp;Dashboard
         </span>
     </a>
 </p>
@@ -18,23 +18,23 @@
 
 <div class="row align-items-center justify-content-center">
     <div class="col-md-3">
-        <canvas id="tasks" class="p-3"></canvas>
-        <p class="text-center">Tasks statistic</p>
+        <canvas id="items" class="p-3"></canvas>
+        <p class="text-center">{{description}}</p>
     </div>
 </div>
 
 <script>
-const tasks_ctx = document.getElementById('tasks');
-const tasks = new Chart(tasks_ctx, {
+const items_ctx = document.getElementById('items');
+const items = new Chart(items_ctx, {
     type: 'doughnut',
     data: {
         labels: ['To do', 'Doing', 'Done'],
         datasets: [{
-            label: 'Tasks',
+            label: '{{label}}',
             data: [
-                {% if tasks_data.1 is None %}0{% else %}{{tasks_data.1}}{% endif%},
-                {% if tasks_data.2 is None %}0{% else %}{{tasks_data.2}}{% endif%},
-                {% if tasks_data.3 is None %}0{% else %}{{tasks_data.3}}{% endif%},
+                {% if data.1 is None %}0{% else %}{{data.1}}{% endif%},
+                {% if data.2 is None %}0{% else %}{{data.2}}{% endif%},
+                {% if data.3 is None %}0{% else %}{{data.3}}{% endif%},
             ],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.5)',

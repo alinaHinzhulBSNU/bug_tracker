@@ -50,7 +50,7 @@ def add_task(request, project_id):
 
         task.text = request.POST["text"]
         task.severity = int(request.POST["severity"])
-        task.status = request.POST["status"]
+        task.status = get_status_by_value("backlog")
         task.performer = User.objects.get(id=request.POST["performer"])
         task.project = project
 
@@ -74,7 +74,7 @@ def update_task(request, project_id, task_id):
     if request.POST:
         task.text = request.POST["text"]
         task.severity = int(request.POST["severity"])
-        task.status = request.POST["status"]
+        task.status = task.status = get_status_by_value("backlog")
         task.performer = User.objects.get(id=request.POST["performer"])
 
         task.save()

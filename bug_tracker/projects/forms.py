@@ -24,7 +24,7 @@ class TaskForm(ModelForm):
     class Meta:
         model = Task
         exclude = ("user", "recurring",)
-        fields = ("text", "severity", "status", "performer")
+        fields = ("text", "severity", "performer")
 
 
 class ManageAccessForm(Form):

@@ -72,10 +72,9 @@ class Task(models.Model):
         verbose_name="End time",
     )
 
-    severity = models.CharField(
+    severity = models.IntegerField(
         null=False,
         blank=False,
-        max_length=2,
         verbose_name="Severity",
         choices=SEVERITY,
     )
@@ -143,10 +142,9 @@ class Bug(models.Model):
         choices=REPRODUCIBILITY
     )
 
-    severity = models.CharField(
+    severity = models.IntegerField(
         null=False,
         blank=False,
-        max_length=2,
         verbose_name="Severity",
         choices=SEVERITY,
     )

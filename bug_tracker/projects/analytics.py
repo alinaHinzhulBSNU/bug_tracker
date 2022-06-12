@@ -1,7 +1,6 @@
-import pandas
+import pandas, numpy
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
-import joblib
 
 
 def get_data_for_statistics(dataset):
@@ -9,31 +8,34 @@ def get_data_for_statistics(dataset):
     return data.groupby(["status"])["status"].count()
 
 
-'''def predict_by_ml(performer, severity, tasks):
-    try:
-        model = joblib.load('time_recomender.joblib')  # try to load model
-    except:
-        # Load data
-        tasks_data = list_to_dataframe(tasks)
+def predict_time_for_task_by_ml(performer, severity, tasks):
+    tasks_data = list_to_dataframe(tasks)
 
-        if tasks_data is not None:
-            # Clean data
-            X = tasks_data.drop(columns=['genre', 'date', 'name', '_state', 'id'])  # data (input)
-            y = tasks_data['genre']  # answers (output)
+    if tasks_data is not None:
+        # Clean data
+        X = tasks_data.drop(columns=[  # data (input)
+            "id",
+            "_state",
+            "text",
+            "start_time",
+            "end_time",
+            "status",
+            "project_id", ]
+        )
 
-            # Split data into Training/Test sets
-            X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+        y = tasks_data["end_time"] - tasks_data["start_time"]  # answers (output)
 
-            # Train model
-            model = DecisionTreeClassifier()
-            model.fit(X_train, y_train)
+        # Split data into Training/Test sets
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-            # Save model
-            joblib.dump(model, 'music-recommender.joblib')
-    else:
+        # Train model
+        model = DecisionTreeClassifier()
+        model.fit(X_train, y_train)
+
         # Make prediction
-        predictions = model.predict([[age, gender]])
-        return predictions[0]'''
+        prediction = model.predict([[severity, performer.id]])[0]
+
+        return numpy.timedelta64(prediction, "D")
 
 
 def list_to_dataframe(list_of_models):

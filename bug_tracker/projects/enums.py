@@ -1,8 +1,8 @@
 SEVERITY = (
-    ("1", "minor"),
-    ("2", "medium"),
-    ("3", "major"),
-    ("4", "critical"),
+    (1, "minor"),
+    (2, "medium"),
+    (3, "major"),
+    (4, "critical"),
 )
 
 STATUS = (

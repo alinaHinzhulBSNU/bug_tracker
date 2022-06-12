@@ -21,11 +21,10 @@
         <h4 class="text-center text-info">To Do:</h4>
         {% for to_do_task in to_do %}
         <div id="{{to_do_task.id}}" class="row rounded m-3 {{to_do_task.get_severity}} js-item" draggable="true">
-            <p>
+            <p class="pt-3">
                 <b>{{to_do_task.text}}</b>
             </p>
-            <p>{{to_do_task.performer.username}}</p>
-            <p>{{to_do_task.start_time}}</p>
+            <p>Performed by:&nbsp;<b>{{to_do_task.performer.username}}</b></p>
         </div>
         {% endfor %}
     </div>
@@ -34,11 +33,10 @@
         <h4 class="text-center text-info">Doing:</h4>
         {% for doing_task in doing %}
         <div id="{{doing_task.id}}" class="row rounded m-3 {{doing_task.get_severity}} js-item" draggable="true">
-            <p>
+            <p class="pt-3">
                 <b>{{doing_task.text}}</b>
             </p>
-            <p>{{doing_task.performer.username}}</p>
-            <p>{{doing_task.start_time}}</p>
+            <p>Performed by:&nbsp;<b>{{doing_task.performer.username}}</b></p>
         </div>
         {% endfor %}
     </div>
@@ -47,11 +45,10 @@
         <h4 class="text-center text-info">Done:</h4>
         {% for done_task in done %}
         <div id="{{done_task.id}}" class="row rounded m-3 {{done_task.get_severity}} js-item" draggable="true">
-            <p>
+            <p class="pt-3">
                 <b>{{done_task.text}}</b>
             </p>
-            <p>{{done_task.performer.username}}</p>
-            <p>{{done_task.start_time}}</p>
+            <p>Performed by:&nbsp;<b>{{done_task.performer.username}}</b></p>
         </div>
         {% endfor %}
     </div>

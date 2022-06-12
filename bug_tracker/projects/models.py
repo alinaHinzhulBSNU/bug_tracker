@@ -172,10 +172,24 @@ class Bug(models.Model):
         verbose_name="Workaround",
     )
 
-    image = models.ImageField(
+    first_screenshot = models.ImageField(
         null=True,
         blank=True,
-        verbose_name="Image",
+        verbose_name="First screenshot",
+        upload_to="images/",
+    )
+
+    second_screenshot = models.ImageField(
+        null=True,
+        blank=True,
+        verbose_name="Second screenshot",
+        upload_to="images/",
+    )
+
+    third_screenshot = models.ImageField(
+        null=True,
+        blank=True,
+        verbose_name="Third screenshot",
         upload_to="images/",
     )
 

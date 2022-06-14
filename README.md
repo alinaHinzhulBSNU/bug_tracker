@@ -18,6 +18,8 @@ Install the dependencies:
 Once `pip` has finished downloading the dependencies:
 ```sh
 $ cd bug_tracker
+$ python manage.py migrate
+$ python manage.py makemigrations
 $ python manage.py runserver
 ```
 And navigate to `http://127.0.0.1:8000/`.

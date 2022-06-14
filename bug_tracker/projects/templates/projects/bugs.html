@@ -14,10 +14,11 @@
     </a>
 </p>
 
+{% if project.bug_set.all %}
 <h2 class="text-center text-secondary p-3">Bugs  backlog:</h2>
 
 <p class="text-center link">
-    <a href="#" class="link">Get bugs statistic</a>
+    <a href="/bugs_statistic/{{project.id}}" class="link">Get bugs statistic</a>
 </p>
 
 <div class="table-container">
@@ -32,7 +33,7 @@
                 {% if request.user|has_group:"manager" %}
                 <th class="col-md-2"></th>
                 <th class="col-md-2">
-                    <a href="#">
+                    <a href="/create_bug/{{project.id}}">
                         <i class="fas fa-plus-circle text-light"></i>
                     </a>
                 </th>
@@ -44,7 +45,7 @@
             {% for bug in project.bug_set.all %}
             <tr>
                 <td class="col-md-6 align-middle">
-                    <a href="#">
+                    <a href="/bug/{{project.id}}/{{bug.id}}">
                         <b>
                             <span class="text-primary">{{bug.summary}}</span>
                         </b>
@@ -52,13 +53,13 @@
                 </td>
                 <td class="col-md-2 text-center align-middle">
                     {% if bug.get_status != 'backlog' %}
-                    <a href="#">
+                    <a href="/delete_bug_from_dashboard/{{project.id}}/{{bug.id}}">
                         <span class="text-success">
                             <i class="fas fa-check-circle"></i>&nbsp;On dashboard
                         </span>
                     </a>
                     {% else %}
-                    <a href="#">
+                    <a href="/add_bug_to_dashboard/{{project.id}}/{{bug.id}}">
                         <span class="text-danger">
                             <i class="fas fa-times-circle text-info"></i>&nbsp;On dashboard
                         </span>
@@ -67,12 +68,12 @@
                 </td>
                 {% if request.user|has_group:"manager" %}
                 <td class="col-md-2 text-center align-middle">
-                    <a href="#">
+                    <a href="/update_bug/{{project.id}}/{{bug.id}}">
                         <i class="fas fa-pencil-alt text-warning"></i>
                     </a>
                 </td>
                 <td class="col-md-2 text-center align-middle">
-                    <a href="#">
+                    <a href="/delete_bug/{{project.id}}/{{bug.id}}">
                         <i class="fas fa-trash-alt text-danger"></i>
                     </a>
                 </td>
@@ -84,8 +85,21 @@
 </div>
 
 <p class="text-center">
-    <a href="#">
+    <a href="/load_bugs_in_csv/{{project.id}}">
         <button class="btn btn-success">Load CSV</button>
     </a>
 </p>
+{% else %}
+<h3 class="text-danger text-center pt-5">
+    <p>No bug reports yet...</p>
+    <p>
+        <i class="far fa-flag"></i>
+    </p>
+</h3>
+{% if request.user|has_group:"manager" %}
+<a href="/create_bug/{{project.id}}" class="text-center">
+    <button class="btn btn-light">Create bug report</button>
+</a>
+{% endif %}
+{% endif %}
 {% endblock %}

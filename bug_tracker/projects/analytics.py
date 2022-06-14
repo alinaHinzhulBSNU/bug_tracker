@@ -6,72 +6,24 @@ from sklearn.tree import DecisionTreeClassifier
 # Groups items by status
 def get_data_for_statistics(dataset):
     data = list_to_dataframe(dataset)
-    return data.groupby(["status"])["status"].count()
+    if data is not None:
+        return data.groupby(["status"])["status"].count()
 
 
-# Makes predictions about task`s progress based on severity and performer
-def predict_time_for_task_by_ml(performer, severity, tasks):
-    tasks_data = list_to_dataframe(tasks)
+# Makes predictions about item`s progress based on severity and performer
+def predict_time_for_item_by_ml(performer, severity, items):
+    data_frame = list_to_dataframe(items)
 
-    if tasks_data is not None:
+    if data_frame is not None and len(data_frame) > 4:
         # Clean data
-        X = tasks_data.drop(columns=[  # data (input)
-            "id",
-            "_state",
-            "text",
-            "start_time",
-            "end_time",
-            "status",
-            "project_id", ]
-        )
-
-        y = tasks_data["end_time"] - tasks_data["start_time"]  # answers (output)
-
-        # Split data into Training/Test sets
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
-
-        # Train model
-        model = DecisionTreeClassifier()
-        model.fit(X_train, y_train)
-
-        # Make prediction
-        prediction = model.predict([[severity, performer.id]])[0]
-
-        return numpy.timedelta64(prediction, "D")
-
-
-# Makes predictions about bug`s progress based on severity and performer
-def predict_time_for_bug_by_ml(performer, severity, bugs):
-    bugs_data = list_to_dataframe(bugs)
-
-    if bugs_data is not None:
-        # Clean data
-        X = bugs_data.drop(columns=[  # input
-            "id",
-            "_state",
-            "summary",
-            "description",
-            "reproducibility",
-            "priority",
-            "symptom",
-            "workaround",
-            "first_screenshot",
-            "second_screenshot",
-            "third_screenshot",
-            "start_time",
-            "end_time",
-            "status",
-            "project_id", ]
-        )
-
-        y = bugs_data["end_time"] - bugs_data["start_time"]  # output
+        X = data_frame[["severity", "performer_id"]]  # data (input)
+        y = data_frame["end_time"] - data_frame["start_time"]  # answers
 
         # Split data into Training/Test sets
         X_train, X_test, y_train, y_test = train_test_split(
             X,
             y,
-            test_size=0.2
-        )
+            test_size=0.2)
 
         # Train model
         model = DecisionTreeClassifier()
@@ -81,6 +33,8 @@ def predict_time_for_bug_by_ml(performer, severity, bugs):
         prediction = model.predict([[severity, performer.id]])[0]
 
         return numpy.timedelta64(prediction, "D")
+    else:
+        return "Not enough data for machine learning. Sorry :("
 
 
 # Converts list to DataFrame
@@ -91,7 +45,8 @@ def list_to_dataframe(list_of_models):
 
         return pandas.DataFrame(
             [
-                [getattr(row, col) for col in columns] for row in list_of_models
+                [getattr(row, col) for col in columns]
+                for row in list_of_models
             ],
             columns=columns
         )

@@ -1,6 +1,7 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.models import Group
 from django.shortcuts import render, redirect
+
 from .forms import RegisterForm, LoginForm
 from .decorators import unauthenticated_user
 
@@ -37,4 +38,3 @@ def sign_in(request):
 def log_out(request):
     logout(request)
     return redirect("/users/login")
-

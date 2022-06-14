@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+{% load custom_tags %}
+
+{% block title %}
+    Bug
+{% endblock %}
+
+{% block content %}
+<p class="text-center pt-3 link">
+    <a href="/bugs/{{project_id}}">
+        <span>
+            <i class="fas fa-arrow-circle-left"></i>&nbsp;All bugs
+        </span>
+    </a>
+</p>
+
+<h2 class="text-center text-secondary p-3">Bug:</h2>
+
+<div class="row align-items-center justify-content-center">
+    <div class="col-md-9 row p-3 rounded {{bug.get_severity}}">
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Summary:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.summary}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="div col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Symptom:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.get_symptom}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Severity:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.get_severity}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="div col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Priority:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.get_priority}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Reproducibility:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.get_reproducibility}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="div col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Workaround:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.workaround}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Status:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.get_status}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="div col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Performer:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>{{bug.performer.username}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>Start time:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>
+                            {% if bug.start_time is None %}
+                            Is not started yet
+                            {% else %}
+                            {{bug.start_time}}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="div col-sm-6">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <b>End time:</b>
+                    </div>
+                    <div class="col-sm-8">
+                        <span>
+                            {% if bug.end_time is None%}
+                            Is not finished yet
+                            {% else %}
+                            {{bug.end_time}}
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-2">
+                <b>Description:</b>
+            </div>
+            <div class="col-sm-10">
+                <span>{{bug.description}}</span>
+            </div>
+        </div>
+
+        {% if bug.first_screenshot.url is not None %}
+        <div class="row p-3 align-items-center justify-content-center">
+            <p class="text-center text-info">Screenshot #1</p>
+            <div class="col-sm-9">
+              <img src="{{bug.first_screenshot.url}}" alt="First screenshot" width="100%">
+            </div>
+        </div>
+        {% endif %}
+
+        {% if bug.second_screenshot.url is not None %}
+        <div class="row p-3 align-items-center justify-content-center">
+            <p class="text-center text-info">Screenshot #2</p>
+            <div class="col-sm-9">
+              <img src="{{bug.second_screenshot.url}}" alt="Second screenshot" width="100%">
+            </div>
+        </div>
+        {% endif %}
+
+        {% if bug.third_screenshot.url is not None %}
+        <div class="row p-3 align-items-center justify-content-center">
+            <p class="text-center text-info">Screenshot #3</p>
+            <div class="col-sm-9">
+              <img src="{{third_screenshot.url}}" alt="Third screenshot" width="100%">
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<p class="text-center p-3">
+    <a href="/predict_for_bug/{{project_id}}/{{bug.id}}">
+        <button class="btn btn-success">Predict time</button>
+    </a>
+</p>
+
+<h3 class="text-center p-3 text-info">{{prediction}}</h3>
+{% endblock %}

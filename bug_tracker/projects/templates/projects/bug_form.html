@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Bug Form
+{% endblock %}
+
+{% block content %}
+<h2 class="text-center text-secondary pt-3">Bug form:</h2>
+
+<div class="form-container">
+    <form method="POST" enctype="multipart/form-data" class="form-group">
+        {% csrf_token %}
+        {{form.media}}
+
+        <div class="row">
+            <div class="col-md-6">
+                <p>{{form.summary|as_crispy_field}}</p>
+            </div>
+            <div class="col-md-6">
+                <p>{{form.symptom|as_crispy_field}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <p>{{form.severity|as_crispy_field}}</p>
+            </div>
+            <div class="col-md-3">
+                <p>{{form.priority|as_crispy_field}}</p>
+            </div>
+            <div class="col-md-3">
+                <p>{{form.reproducibility|as_crispy_field}}</p>
+            </div>
+            <div class="col-md-3">
+                <p>{{form.performer|as_crispy_field}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p>{{form.description|as_crispy_field}}</p>
+            </div>
+            <div class="col-md-6">
+                <p>{{form.first_screenshot|as_crispy_field}}</p>
+                <p>{{form.second_screenshot|as_crispy_field}}</p>
+                <p>{{form.third_screenshot|as_crispy_field}}</p>
+                <p>{{form.workaround|as_crispy_field}}</p>
+            </div>
+        </div>
+
+        {{form.project}}
+        {{form.status}}
+        {{form.start_time}}
+        {{form.end_time}}
+
+        <!--BUTTON-->
+        <div class="row text-center p-3">
+            <div>
+                <button type="submit" name="save" class="btn btn-warning">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

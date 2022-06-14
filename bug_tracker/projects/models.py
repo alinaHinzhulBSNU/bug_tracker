@@ -18,17 +18,6 @@ class Project(models.Model):
         validators=[validators.MinLengthValidator(2)],
     )
 
-    start_time = models.DateTimeField(
-        auto_now_add=True,
-        db_index=True,
-        verbose_name="Start time",
-    )
-
-    end_time = models.DateTimeField(
-        null=True,
-        verbose_name="End time",
-    )
-
     description = models.TextField(
         null=False,
         verbose_name="Description",
@@ -47,7 +36,6 @@ class Project(models.Model):
     class Meta:
         verbose_name_plural = "Projects"
         verbose_name = "Project"
-        ordering = ["start_time"]
 
 
 class Task(models.Model):
@@ -75,6 +63,7 @@ class Task(models.Model):
     severity = models.IntegerField(
         null=False,
         blank=False,
+        default=1,
         verbose_name="Severity",
         choices=SEVERITY,
     )
@@ -89,8 +78,8 @@ class Task(models.Model):
 
     project = models.ForeignKey(
         Project,
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name="Project",
         on_delete=models.CASCADE,
     )
@@ -122,7 +111,7 @@ class Bug(models.Model):
     summary = models.CharField(
         null=False,
         blank=False,
-        verbose_name="Text",
+        verbose_name="Summary",
         max_length=200,
         validators=[validators.MinLengthValidator(2)],
     )
@@ -145,6 +134,7 @@ class Bug(models.Model):
     severity = models.IntegerField(
         null=False,
         blank=False,
+        default=1,
         verbose_name="Severity",
         choices=SEVERITY,
     )
@@ -175,21 +165,21 @@ class Bug(models.Model):
     first_screenshot = models.ImageField(
         null=True,
         blank=True,
-        verbose_name="First screenshot",
+        verbose_name="Screenshot #1",
         upload_to="images/",
     )
 
     second_screenshot = models.ImageField(
         null=True,
         blank=True,
-        verbose_name="Second screenshot",
+        verbose_name="Screenshot #2",
         upload_to="images/",
     )
 
     third_screenshot = models.ImageField(
         null=True,
         blank=True,
-        verbose_name="Third screenshot",
+        verbose_name="Screenshot #3",
         upload_to="images/",
     )
 
@@ -224,8 +214,8 @@ class Bug(models.Model):
 
     project = models.ForeignKey(
         Project,
-        null=False,
-        blank=False,
+        null=True,
+        blank=True,
         verbose_name="Project",
         on_delete=models.CASCADE,
     )

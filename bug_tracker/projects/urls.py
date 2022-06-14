@@ -1,6 +1,9 @@
 from django.urls import path
 from . import views
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 # Routing in projects app
 urlpatterns = [
     # Projects URL
@@ -33,9 +36,9 @@ urlpatterns = [
     path("task/<int:project_id>/<int:task_id>",
          views.read_task,
          name="read_task"),
-    path("add_task/<int:project_id>",
-         views.add_task,
-         name="add_task"),
+    path("create_task/<int:project_id>",
+         views.create_task,
+         name="create_task"),
     path("update_task/<int:project_id>/<int:task_id>",
          views.update_task,
          name="update_task"),
@@ -48,12 +51,6 @@ urlpatterns = [
     path("delete_task_from_dashboard/<int:project_id>/<int:task_id>",
          views.delete_task_from_dashboard,
          name="delete_task_from_dashboard"),
-    path("load_tasks_in_csv/<int:project_id>",
-         views.load_tasks_in_csv,
-         name="load_tasks_in_csv"),
-    path("predict_for_task/<int:project_id>/<int:task_id>",
-         views.predict_for_task,
-         name="predict_for_task"),
     path("set_task_to_do/<int:project_id>/<int:task_id>",
          views.set_task_to_do,
          name="set_task_to_do"),
@@ -63,19 +60,62 @@ urlpatterns = [
     path("set_task_done/<int:project_id>/<int:task_id>",
          views.set_task_done,
          name="set_task_done"),
+    path("load_tasks_in_csv/<int:project_id>",
+         views.load_tasks_in_csv,
+         name="load_tasks_in_csv"),
+    path("predict_for_task/<int:project_id>/<int:task_id>",
+         views.predict_for_task,
+         name="predict_for_task"),
 
     # Bugs
-    path("bugs/<int:id>",
+    path("bugs/<int:project_id>",
          views.read_bugs,
          name="read_bugs"),
+    path("bug/<int:project_id>/<int:bug_id>",
+         views.read_bug,
+         name="read_bug"),
+    path("create_bug/<int:project_id>",
+         views.create_bug,
+         name="create_bug"),
+    path("update_bug/<int:project_id>/<int:bug_id>",
+         views.update_bug,
+         name="update_bug"),
+    path("delete_bug/<int:project_id>/<int:bug_id>",
+         views.delete_bug,
+         name="delete_bug"),
+    path("add_bug_to_dashboard/<int:project_id>/<int:bug_id>",
+         views.add_bug_to_dashboard,
+         name="add_bug_to_dashboard"),
+    path("delete_bug_from_dashboard/<int:project_id>/<int:bug_id>",
+         views.delete_bug_from_dashboard,
+         name="delete_bug_from_dashboard"),
+    path("set_bug_to_do/<int:project_id>/<int:bug_id>",
+         views.set_bug_to_do,
+         name="set_bug_to_do"),
+    path("set_bug_doing/<int:project_id>/<int:bug_id>",
+         views.set_bug_doing,
+         name="set_bug_doing"),
+    path("set_bug_done/<int:project_id>/<int:bug_id>",
+         views.set_bug_done,
+         name="set_bug_done"),
+    path("load_bugs_in_csv/<int:project_id>",
+         views.load_bugs_in_csv,
+         name="load_bugs_in_csv"),
+    path("predict_for_bug/<int:project_id>/<int:bug_id>",
+         views.predict_for_bug,
+         name="predict_for_bug"),
 
     # Statistics
     path("tasks_statistic/<int:project_id>",
          views.get_tasks_statistic,
          name="tasks_statistic"),
+    path("bugs_statistic/<int:project_id>",
+         views.get_bugs_statistic,
+         name="bugs_statistic"),
 
     # Restricted
     path("restricted/",
          views.restricted,
          name="restricted"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

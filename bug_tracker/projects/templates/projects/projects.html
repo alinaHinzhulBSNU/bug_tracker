@@ -15,8 +15,6 @@
             <tr class="text-center align-middle" scope="col">
                 <th>Name</th>
                 <th>Description</th>
-                <th>Creation time</th>
-                <th>Finished</th>
 
                 {% if request.user|has_group:"manager" %}
                 <th>
@@ -38,15 +36,8 @@
                         </b>
                     </a>
                 </td>
+
                 <td class="align-middle">{{project.description}}</td>
-                <td class="text-center align-middle">{{project.start_time}}</td>
-                <td class="text-center align-middle">
-                    {% if project.end_time != None %}
-                        <i class="fas fa-check-circle text-success"></i>
-                    {% else %}
-                        <i class="fas fa-times-circle text-danger"></i>
-                    {% endif %}
-                </td>
 
                 {% if request.user|has_group:"manager" %}
                 <td class="align-middle" scope="col">

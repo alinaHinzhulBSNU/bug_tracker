@@ -8,13 +8,15 @@ from .forms import ProjectForm, ManageAccessForm
 
 # CRUD
 @login_required(login_url="/users/login")
-@allowed_users(allowed_roles=["admin", "developer", "tester", "manager"])
+@allowed_users(allowed_roles=["manager", "developer", "tester"])
 def read_projects(request):
     projects = request.user.project_set.all()
     return render(
         request,
         "projects/projects.html",
-        {"projects": projects}
+        {
+            "projects": projects,
+        }
     )
 
 
@@ -22,10 +24,10 @@ def read_projects(request):
 @allowed_users(allowed_roles=["manager"])
 def create_project(request):
     if request.POST:
-        form = ProjectForm(request.POST)
+        form = ProjectForm(data=request.POST)
         if form.is_valid():
             project = form.save()
-            project.team.add(request.user)
+            project.team.add(request.user)  # creator obviously is a member
             project.save()
             return redirect("/")
     else:
@@ -34,7 +36,9 @@ def create_project(request):
     return render(
         request,
         "projects/project_form.html",
-        {"form": form}
+        {
+            "form": form,
+        }
     )
 
 
@@ -44,7 +48,7 @@ def update_project(request, project_id):
     project = Project.objects.get(id=project_id)
 
     if request.POST:
-        form = ProjectForm(request.POST, instance=project)
+        form = ProjectForm(data=request.POST, instance=project)
         if form.is_valid():
             form.save()
             return redirect("/")
@@ -54,7 +58,9 @@ def update_project(request, project_id):
     return render(
         request,
         "projects/project_form.html",
-        {"form": form}
+        {
+            "form": form,
+        }
     )
 
 
@@ -79,7 +85,10 @@ def allow_access(request, project_id):
     return render(
         request,
         "projects/access.html",
-        {"form": form, "project": project}
+        {
+            "form": form,
+            "project": project,
+        }
     )
 
 

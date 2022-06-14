@@ -1,3 +1,3 @@
-from .custom import *
+from .base import *
 
 DEBUG = True

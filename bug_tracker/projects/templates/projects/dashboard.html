@@ -17,36 +17,117 @@
 <div id="board" class="row p-3">
     <div id="to_do" class="col-md-4 js-zone">
         <h4 class="text-center text-info">To Do:</h4>
-        {% for to_do_task in to_do %}
-        <div id="{{to_do_task.id}}" class="row rounded m-3 {{to_do_task.get_severity}} js-item" draggable="true">
-            <p class="pt-3">
+        {% for to_do_task in to_do_tasks %}
+        <div id="{{to_do_task.id}}"
+             class="row rounded m-3 {{to_do_task.get_severity}} js-item task"
+             draggable="true">
+            <p class="pt-3 item_title">
                 <b>{{to_do_task.text}}</b>
             </p>
             <p>Performed by:&nbsp;<b>{{to_do_task.performer.username}}</b></p>
+        </div>
+        {% endfor %}
+        {% for to_do_bug in to_do_bugs %}
+        <div id="{{to_do_bug.id}}"
+             class="m-3
+             row
+             rounded
+             align-items-center
+             justify-content-center
+             border
+             border-danger
+             {{to_do_bug.get_severity}}
+             js-item bug"
+             draggable="true">
+            <div class="col-md-2">
+                <h2>
+                    <i class="fas fa-times-circle text-danger"></i>
+                </h2>
+            </div>
+            <div class="col-md-10">
+                <p class="pt-3 item_title">
+                    <b>{{to_do_bug.summary}}</b>
+                </p>
+                <p>Performed by:&nbsp;<b>{{to_do_bug.performer.username}}</b></p>
+            </div>
         </div>
         {% endfor %}
     </div>
 
     <div id="doing" class="col-md-4 js-zone">
         <h4 class="text-center text-info">Doing:</h4>
-        {% for doing_task in doing %}
-        <div id="{{doing_task.id}}" class="row rounded m-3 {{doing_task.get_severity}} js-item" draggable="true">
-            <p class="pt-3">
+        {% for doing_task in doing_tasks %}
+        <div id="{{doing_task.id}}"
+             class="row rounded m-3 {{doing_task.get_severity}} js-item task"
+             draggable="true">
+            <p class="pt-3 item_title">
                 <b>{{doing_task.text}}</b>
             </p>
             <p>Performed by:&nbsp;<b>{{doing_task.performer.username}}</b></p>
+        </div>
+        {% endfor %}
+        {% for doing_bug in doing_bugs %}
+        <div id="{{doing_bug.id}}"
+             class="m-3
+             row
+             rounded
+             align-items-center
+             justify-content-center
+             border
+             border-danger
+             {{doing_bug.get_severity}}
+             js-item bug"
+             draggable="true">
+            <div class="col-md-2">
+                <h2>
+                    <i class="fas fa-times-circle text-danger"></i>
+                </h2>
+            </div>
+            <div class="col-md-10">
+                <p class="pt-3 item_title">
+                    <b>{{doing_bug.summary}}</b>
+                </p>
+                <p>Performed by:&nbsp;<b>{{doing_bug.performer.username}}</b></p>
+            </div>
         </div>
         {% endfor %}
     </div>
 
     <div id="done" class="col-md-4 js-zone">
         <h4 class="text-center text-info">Done:</h4>
-        {% for done_task in done %}
-        <div id="{{done_task.id}}" class="row rounded m-3 {{done_task.get_severity}} js-item" draggable="true">
-            <p class="pt-3">
+        {% for done_task in done_tasks %}
+        <div id="{{done_task.id}}"
+             class="row rounded m-3 {{done_task.get_severity}} js-item task"
+             draggable="true">
+            <p class="pt-3 item_title">
                 <b>{{done_task.text}}</b>
             </p>
             <p>Performed by:&nbsp;<b>{{done_task.performer.username}}</b></p>
+        </div>
+        {% endfor %}
+        {% for done_bug in done_bugs %}
+        <div id="{{done_bug.id}}"
+             class="m-3
+             row
+             rounded
+             align-items-center
+             justify-content-center
+             border
+             border-danger
+             {{done_bug.get_severity}}
+             js-item bug"
+             draggable="true">
+            <div class="col-md-2">
+                <h2>
+                    <i class="fas fa-times-circle text-danger"></i>
+                </h2>
+            </div>
+            <div class="col-md-10">
+                <p class="pt-3 item_title">
+                    <b>{{done_bug.summary}}</b>
+                </p>
+                <p>Performed by:&nbsp;<b>{{done_bug.performer.username}}</b></p>
+            </div>
         </div>
         {% endfor %}
     </div>
@@ -56,35 +137,32 @@
     // Draggable elements
     const items = document.getElementsByClassName("js-item");
 
+    function drag_start(event){
+        let id = event.target.id;
+        item = document.getElementById(id);
+
+        setTimeout(() => {item.classList.add("hide");}, 0);
+
+        event.dataTransfer.setData("id", id);
+        if(item.classList.contains("task")){
+            event.dataTransfer.setData("type", "task");
+        }else if(item.classList.contains("bug")){
+            event.dataTransfer.setData("type", "bug");
+        }
+    }
+
+    function drag_end(event){
+        window.location.href = "/dashboard/" + {{project_id}};
+    }
+
     for (var i = 0; i < items.length; ++i) {
         var item = items[i];
         item.ondragstart = drag_start;
         item.ondragend = drag_end;
     }
 
-    function drag_start(event){
-        let id = event.target.id;
-        task = document.getElementById(id);
-
-        setTimeout(() => {
-            task.classList.add("hide");
-        }, 0);
-
-        event.dataTransfer.setData("id", id);
-    }
-
-    function drag_end(event){
-        window.location.href = '/dashboard/' + {{project_id}};
-    }
-
     // Drop zones
     const zones = document.getElementsByClassName("js-zone");
-
-    for (var i = 0; i < zones.length; ++i) {
-        var zone = zones[i];
-        zone.ondragover = allow_drop;
-        zone.ondrop = drop;
-    }
 
     function allow_drop(event){
         event.preventDefault();
@@ -92,17 +170,27 @@
 
     function drop(event){
         let zone_id = event.target.id;
-        let task_id = event.dataTransfer.getData("id");
+        let id = event.dataTransfer.getData("id");
+        let type = event.dataTransfer.getData("type");
+        let link = "/dashboard/" + {{project_id}};
 
         if(zone_id === "to_do"){
-            window.location.href = '/set_task_to_do/' + {{project_id}} + '/' + task_id;
+            link = "/set_" + type + "_to_do/" + {{project_id}} + "/" + id;
         }
         else if(zone_id === "doing"){
-            window.location.href = '/set_task_doing/' + {{project_id}} + '/' + task_id;
+            link = "/set_" + type + "_doing/" + {{project_id}} + "/" + id;
         }
         else if(zone_id === "done"){
-            window.location.href = '/set_task_done/' + {{project_id}} + '/' + task_id;
+            link = "/set_" + type + "_done/" + {{project_id}} + "/" + id;
         }
+
+        window.location.href = link;
+    }
+
+    for (var i = 0; i < zones.length; ++i) {
+        var zone = zones[i];
+        zone.ondragover = allow_drop;
+        zone.ondrop = drop;
     }
 </script>
 {% endblock %}

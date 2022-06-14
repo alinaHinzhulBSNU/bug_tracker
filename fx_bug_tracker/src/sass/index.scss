@@ -67,6 +67,14 @@ $theme-colors: (
             .hide{
                 display: none;
             }
+            .task, .bug{
+                &:hover{
+                    box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
+                    .item_title{
+                        color: $primary;
+                    }
+                }
+            }
         }
     }
 }

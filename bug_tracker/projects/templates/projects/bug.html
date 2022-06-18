@@ -17,7 +17,7 @@
 <h2 class="text-center text-secondary p-3">Bug:</h2>
 
 <div class="row align-items-center justify-content-center">
-    <div class="col-md-9 row p-3 rounded {{bug.get_severity}}">
+    <div class="col-md-9 row p-3 m-3 rounded {{bug.get_severity}}">
 
         <div class="row">
             <div class="col-sm-6">
@@ -184,6 +184,7 @@
     </div>
 </div>
 
+{% if bug.end_time is None %}
 <p class="text-center p-3">
     <a href="/predict_for_bug/{{project_id}}/{{bug.id}}">
         <button class="btn btn-success">Predict time</button>
@@ -191,4 +192,5 @@
 </p>
 
 <h3 class="text-center p-3 text-info">{{prediction}}</h3>
+{% endif %}
 {% endblock %}

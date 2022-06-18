@@ -19,7 +19,13 @@ def register(request):
     else:
         form = RegisterForm()
 
-    return render(request, "users/register.html", {"form": form})
+    return render(
+        request,
+        "users/register.html",
+        {
+            "form": form
+        }
+    )
 
 
 @unauthenticated_user
@@ -32,7 +38,13 @@ def sign_in(request):
             login(request, user)
             return redirect("/")
 
-    return render(request, "registration/login.html", {"form": form})
+    return render(
+        request,
+        "registration/login.html",
+        {
+            "form": form
+        }
+    )
 
 
 def log_out(request):

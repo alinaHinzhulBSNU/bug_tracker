@@ -1,4 +1,4 @@
-# ML-based bug tracker application
+# ML-based bug tracking system
 
 ## Setup
 
